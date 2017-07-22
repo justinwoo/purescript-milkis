@@ -1,6 +1,6 @@
 # Purescript-Milkis
 
-A wrapper around [`node-fetch`](https://github.com/bitinn/node-fetch) for fetch requests through Node.
+A wrapper around [node-fetch](https://github.com/bitinn/node-fetch) for fetch requests through Node.
 
 Aptly named for the greatest soft drink of all time, [Milkis](https://en.wikipedia.org/wiki/Milkis).
 
