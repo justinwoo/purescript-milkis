@@ -1,0 +1,36 @@
+{
+  "name": "purescript-milkis",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-prelude": "^3.1.0",
+    "purescript-console": "^3.0.0",
+    "purescript-node-http": "^4.0.0",
+    "purescript-http-methods": "^3.0.0",
+    "purescript-aff-promise": "^0.6.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^3.0.0",
+    "purescript-spec": "^1.0.0"
+  },
+  "authors": [
+    "justinwoo <moomoowoo@gmail.com>",
+    "Vincent",
+    "Welkin",
+    "sterd",
+    "Alex Kelley",
+    "Rightfold"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justinwoo/purescript-milkis.git"
+  },
+  "license": "MIT",
+  "homepage": "http://lmgtfy.com/?s=b&q=milkis"
+}
