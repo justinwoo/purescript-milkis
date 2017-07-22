@@ -14,5 +14,5 @@ Aptly named for the greatest soft drink of all time, [Milkis](https://en.wikiped
 
 ## Usage
 
-See the [tests](./tests/Main.purs)
+See the [tests](./test/Main.purs)
 
