@@ -1,5 +1,7 @@
 # Purescript-Milkis
 
+[![Build Status](https://travis-ci.org/justinwoo/purescript-milkis.svg?branch=master)](https://travis-ci.org/justinwoo/purescript-milkis)
+
 A wrapper around [node-fetch](https://github.com/bitinn/node-fetch) for fetch requests through Node.
 
 Aptly named for the greatest soft drink of all time, [Milkis](https://en.wikipedia.org/wiki/Milkis).
