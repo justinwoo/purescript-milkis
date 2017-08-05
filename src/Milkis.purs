@@ -11,6 +11,8 @@ module Milkis
 import Prelude
 
 import Control.Monad.Aff (Aff)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Control.Promise (Promise, toAff)
 import Data.Foreign (Foreign)
@@ -35,15 +37,16 @@ fetch :: forall eff
   .  String
   -> FetchOptions
   -> Aff (http :: HTTP | eff) Response
-fetch url opts = toAff $ fetchImpl url (fetchOptionsToRawFetchOptions opts)
+fetch url opts =
+  (liftEff $ fetchImpl url (fetchOptionsToRawFetchOptions opts)) >>= toAff
 
 json :: forall eff
   .  Response
-  -> Aff (exception :: EXCEPTION | eff) Foreign
-json res = toAff $ jsonImpl res
+  -> Aff (http :: HTTP | eff) Foreign
+json res = liftEff (jsonImpl res) >>= toAff
 
-text :: forall eff. Response -> Aff eff String
-text res = toAff $ textImpl res
+text :: forall eff. Response -> Aff (http :: HTTP | eff) String
+text res = liftEff (textImpl res) >>= toAff
 
 fetchOptionsToRawFetchOptions :: FetchOptions -> RawFetchOptions
 fetchOptionsToRawFetchOptions opts =
@@ -60,15 +63,15 @@ type RawFetchOptions =
 
 foreign import data Response :: Type
 
-foreign import fetchImpl ::
+foreign import fetchImpl :: forall eff.
   URL
   -> RawFetchOptions
-  -> Promise Response
+  -> Eff (http:: HTTP | eff) (Promise Response)
 
-foreign import jsonImpl ::
+foreign import jsonImpl :: forall eff.
   Response
-  -> Promise Foreign
+  -> Eff (http:: HTTP | eff) (Promise Foreign)
 
-foreign import textImpl ::
+foreign import textImpl :: forall eff.
   Response
-  -> Promise String
+  -> Eff (http:: HTTP | eff) (Promise String)
