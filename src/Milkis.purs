@@ -12,9 +12,7 @@ import Prelude
 
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Eff.Exception (EXCEPTION)
-import Control.Promise (Promise, toAff)
+import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
 import Data.HTTP.Method (Method(..))
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -37,16 +35,15 @@ fetch :: forall eff
   .  String
   -> FetchOptions
   -> Aff (http :: HTTP | eff) Response
-fetch url opts =
-  (liftEff $ fetchImpl url (fetchOptionsToRawFetchOptions opts)) >>= toAff
+fetch url opts = toAffE $ fetchImpl url (fetchOptionsToRawFetchOptions opts)
 
 json :: forall eff
   .  Response
-  -> Aff (http :: HTTP | eff) Foreign
-json res = liftEff (jsonImpl res) >>= toAff
+  -> Aff eff Foreign
+json res = toAffE (jsonImpl res) 
 
-text :: forall eff. Response -> Aff (http :: HTTP | eff) String
-text res = liftEff (textImpl res) >>= toAff
+text :: forall eff. Response -> Aff eff String
+text res = toAffE (textImpl res)
 
 fetchOptionsToRawFetchOptions :: FetchOptions -> RawFetchOptions
 fetchOptionsToRawFetchOptions opts =
@@ -70,8 +67,8 @@ foreign import fetchImpl :: forall eff.
 
 foreign import jsonImpl :: forall eff.
   Response
-  -> Eff (http:: HTTP | eff) (Promise Foreign)
+  -> Eff eff (Promise Foreign)
 
 foreign import textImpl :: forall eff.
   Response
-  -> Eff (http:: HTTP | eff) (Promise String)
+  -> Eff eff (Promise String)
