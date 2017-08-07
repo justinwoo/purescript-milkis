@@ -11,8 +11,8 @@ module Milkis
 import Prelude
 
 import Control.Monad.Aff (Aff)
-import Control.Monad.Eff.Exception (EXCEPTION)
-import Control.Promise (Promise, toAff)
+import Control.Monad.Eff (Eff)
+import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
 import Data.HTTP.Method (Method(..))
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -35,15 +35,15 @@ fetch :: forall eff
   .  String
   -> FetchOptions
   -> Aff (http :: HTTP | eff) Response
-fetch url opts = toAff $ fetchImpl url (fetchOptionsToRawFetchOptions opts)
+fetch url opts = toAffE $ fetchImpl url (fetchOptionsToRawFetchOptions opts)
 
 json :: forall eff
   .  Response
-  -> Aff (exception :: EXCEPTION | eff) Foreign
-json res = toAff $ jsonImpl res
+  -> Aff eff Foreign
+json res = toAffE (jsonImpl res) 
 
 text :: forall eff. Response -> Aff eff String
-text res = toAff $ textImpl res
+text res = toAffE (textImpl res)
 
 fetchOptionsToRawFetchOptions :: FetchOptions -> RawFetchOptions
 fetchOptionsToRawFetchOptions opts =
@@ -60,15 +60,15 @@ type RawFetchOptions =
 
 foreign import data Response :: Type
 
-foreign import fetchImpl ::
+foreign import fetchImpl :: forall eff.
   URL
   -> RawFetchOptions
-  -> Promise Response
+  -> Eff (http:: HTTP | eff) (Promise Response)
 
-foreign import jsonImpl ::
+foreign import jsonImpl :: forall eff.
   Response
-  -> Promise Foreign
+  -> Eff eff (Promise Foreign)
 
-foreign import textImpl ::
+foreign import textImpl :: forall eff.
   Response
-  -> Promise String
+  -> Eff eff (Promise String)
