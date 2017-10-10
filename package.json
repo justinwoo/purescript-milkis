@@ -12,6 +12,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "node-fetch": "^1.7.1"
+    "node-fetch": "^1.7.3"
   }
 }
