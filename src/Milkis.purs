@@ -1,11 +1,18 @@
 module Milkis
-  ( URL
-  , FetchOptions
+  ( URL(..)
+  , Response
+  , Options
+  , Method
+  , Headers
+  , HeaderProperties
   , defaultFetchOptions
+  , getMethod
+  , postMethod
+  , headMethod
   , fetch
   , json
   , text
-  , Response
+  , makeHeaders
   ) where
 
 import Prelude
@@ -14,29 +21,55 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
 import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
-import Data.HTTP.Method (Method(..))
-import Data.Maybe (Maybe(Nothing))
-import Data.Nullable (Nullable, toNullable)
-import Node.HTTP (HTTP)
+import Data.Newtype (class Newtype)
+import Unsafe.Coerce (unsafeCoerce)
 
-type URL = String
+newtype URL = URL String
+derive instance newtypeURL :: Newtype URL _
+derive newtype instance showURL :: Show URL
 
-type FetchOptions =
-  { method :: Method
-  , body :: Maybe String
-  }
+type Options =
+  ( method :: Method
+  , body :: String
+  , headers :: Headers
+  )
 
-defaultFetchOptions :: FetchOptions
+foreign import data Method :: Type
+
+getMethod :: Method
+getMethod = unsafeCoerce "GET"
+
+postMethod :: Method
+postMethod = unsafeCoerce "POST"
+
+headMethod :: Method
+headMethod = unsafeCoerce "HEAD"
+
+foreign import data Headers :: Type
+
+type HeaderProperties =
+  ( "Content-Type" :: String
+  )
+
+makeHeaders
+  :: forall props trash
+   . Union props trash HeaderProperties
+  => Record props
+  -> Headers
+makeHeaders = unsafeCoerce
+
+defaultFetchOptions :: {method :: Method}
 defaultFetchOptions =
-  { method: GET
-  , body: Nothing
+  { method: getMethod
   }
 
-fetch :: forall eff
-  .  String
-  -> FetchOptions
-  -> Aff (http :: HTTP | eff) Response
-fetch url opts = toAffE $ fetchImpl url (fetchOptionsToRawFetchOptions opts)
+fetch
+  :: forall options trash eff
+   . Union options trash Options
+  => URL
+  -> Record (method :: Method | options)
+  -> Aff eff Response
+fetch url opts = toAffE $ fetchImpl url opts
 
 json :: forall eff
   .  Response
@@ -46,25 +79,12 @@ json res = toAffE (jsonImpl res)
 text :: forall eff. Response -> Aff eff String
 text res = toAffE (textImpl res)
 
-fetchOptionsToRawFetchOptions :: FetchOptions -> RawFetchOptions
-fetchOptionsToRawFetchOptions opts =
-  { method: convertMethod opts.method
-  , body: toNullable opts.body
-  }
-  where
-    convertMethod = show
-
-type RawFetchOptions =
-  { method :: String
-  , body :: Nullable String
-  }
-
 foreign import data Response :: Type
 
-foreign import fetchImpl :: forall eff.
+foreign import fetchImpl :: forall eff options.
   URL
-  -> RawFetchOptions
-  -> Eff (http:: HTTP | eff) (Promise Response)
+  -> Record options
+  -> Eff eff (Promise Response)
 
 foreign import jsonImpl :: forall eff.
   Response
