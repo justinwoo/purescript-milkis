@@ -22,6 +22,7 @@ import Control.Monad.Eff (Eff)
 import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
 import Data.Newtype (class Newtype)
+import Milkis.Impl (FetchImpl)
 import Unsafe.Coerce (unsafeCoerce)
 
 newtype URL = URL String
@@ -66,10 +67,11 @@ defaultFetchOptions =
 fetch
   :: forall options trash eff
    . Union options trash Options
-  => URL
+  => FetchImpl
+  -> URL
   -> Record (method :: Method | options)
   -> Aff eff Response
-fetch url opts = toAffE $ fetchImpl url opts
+fetch impl url opts = toAffE $ _fetch impl url opts
 
 json :: forall eff
   .  Response
@@ -81,8 +83,10 @@ text res = toAffE (textImpl res)
 
 foreign import data Response :: Type
 
-foreign import fetchImpl :: forall eff options.
-  URL
+foreign import _fetch
+  :: forall eff options
+   . FetchImpl
+  -> URL
   -> Record options
   -> Eff eff (Promise Response)
 
