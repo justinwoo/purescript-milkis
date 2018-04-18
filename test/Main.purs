@@ -7,6 +7,7 @@ import Control.Monad.Eff (Eff)
 import Data.Either (Either(..), isRight)
 import Data.String (null)
 import Milkis (URL(..), defaultFetchOptions, fetch, makeHeaders, postMethod, text)
+import Milkis.Impl.Node (nodeFetch)
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (fail, shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
@@ -16,7 +17,7 @@ main :: Eff (RunnerEffects ()) Unit
 main = run [consoleReporter] do
   describe "purescript-milkis" do
     it "get works and gets a body" do
-      _response <- attempt $ fetch (URL "https://www.google.com") defaultFetchOptions
+      _response <- attempt $ fetch nodeFetch (URL "https://www.google.com") defaultFetchOptions
       case _response of
         Left e -> do
           fail $ "failed with " <> show e
@@ -30,5 +31,5 @@ main = run [consoleReporter] do
           , body: "{}"
           , headers: makeHeaders {"Content-Type": "application/json"}
           }
-      result <- attempt $ fetch (URL "https://www.google.com") opts
+      result <- attempt $ fetch nodeFetch (URL "https://www.google.com") opts
       isRight result `shouldEqual` true

@@ -1,12 +1,12 @@
-var fetch = require("node-fetch");
-
-exports.fetchImpl = function(url) {
-  return function(options) {
-    return function() {
-      return fetch(url, options).catch(function(e) {
-        // we have to wrap node-fetch's non-Error error :(
-        throw new Error(e);
-      });
+exports._fetch = function(fetchImpl) {
+  return function(url) {
+    return function(options) {
+      return function() {
+        return fetchImpl(url, options).catch(function(e) {
+          // we have to wrap node-fetch's non-Error error :(
+          throw new Error(e);
+        });
+      };
     };
   };
 };

@@ -1,0 +1,1 @@
+exports.windowFetch = window.fetch;
