@@ -13,6 +13,7 @@ module Milkis
   , json
   , text
   , makeHeaders
+  , statusCode
   ) where
 
 import Prelude
@@ -80,6 +81,12 @@ json res = toAffE (jsonImpl res)
 
 text :: forall eff. Response -> Aff eff String
 text res = toAffE (textImpl res)
+
+statusCode :: Response -> Int
+statusCode response = response'.statusCode
+  where
+    response' :: { statusCode :: Int }
+    response' = unsafeCoerce response
 
 foreign import data Response :: Type
 
