@@ -1,5 +1,6 @@
 module Milkis
   ( URL(..)
+  , Fetch
   , Response
   , Options
   , Method
@@ -29,6 +30,13 @@ import Unsafe.Coerce (unsafeCoerce)
 newtype URL = URL String
 derive instance newtypeURL :: Newtype URL _
 derive newtype instance showURL :: Show URL
+
+type Fetch
+   = forall options trash eff
+   . Union options trash Options
+  => URL
+  -> Record (method :: Method | options)
+  -> Aff eff Response
 
 type Options =
   ( method :: Method
@@ -66,12 +74,8 @@ defaultFetchOptions =
   }
 
 fetch
-  :: forall options trash eff
-   . Union options trash Options
-  => FetchImpl
-  -> URL
-  -> Record (method :: Method | options)
-  -> Aff eff Response
+  :: FetchImpl
+  -> Fetch
 fetch impl url opts = toAffE $ _fetch impl url opts
 
 json :: forall eff
