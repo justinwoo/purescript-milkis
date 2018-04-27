@@ -39,3 +39,11 @@ main = run [consoleReporter] do
           }
       result <- attempt $ fetch (URL "https://www.google.com") opts
       isRight result `shouldEqual` true
+    it "put works" do
+      let opts = { method: M.putMethod }
+      result <- attempt $ fetch (URL "https://www.google.com") opts
+      isRight result `shouldEqual` true
+    it "delete works" do
+      let opts = { method: M.deleteMethod }
+      result <- attempt $ fetch (URL "https://www.google.com") opts
+      isRight result `shouldEqual` true

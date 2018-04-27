@@ -9,6 +9,8 @@ module Milkis
   , defaultFetchOptions
   , getMethod
   , postMethod
+  , putMethod
+  , deleteMethod
   , headMethod
   , fetch
   , json
@@ -51,6 +53,12 @@ getMethod = unsafeCoerce "GET"
 
 postMethod :: Method
 postMethod = unsafeCoerce "POST"
+
+putMethod :: Method
+putMethod = unsafeCoerce "PUT"
+
+deleteMethod :: Method
+deleteMethod = unsafeCoerce "DELETE"
 
 headMethod :: Method
 headMethod = unsafeCoerce "HEAD"
