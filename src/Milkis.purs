@@ -5,7 +5,6 @@ module Milkis
   , Options
   , Method
   , Headers
-  , HeaderProperties
   , defaultFetchOptions
   , getMethod
   , postMethod
@@ -25,6 +24,8 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
 import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
+import Data.StrMap as StrMap
+import Data.Tuple (Tuple)
 import Data.Newtype (class Newtype)
 import Milkis.Impl (FetchImpl)
 import Unsafe.Coerce (unsafeCoerce)
@@ -63,18 +64,12 @@ deleteMethod = unsafeCoerce "DELETE"
 headMethod :: Method
 headMethod = unsafeCoerce "HEAD"
 
-foreign import data Headers :: Type
-
-type HeaderProperties =
-  ( "Content-Type" :: String
-  )
+type Headers = StrMap.StrMap String
 
 makeHeaders
-  :: forall props trash
-   . Union props trash HeaderProperties
-  => Record props
+  :: Array (Tuple String String)
   -> Headers
-makeHeaders = unsafeCoerce
+makeHeaders = StrMap.fromFoldable
 
 defaultFetchOptions :: {method :: Method}
 defaultFetchOptions =
