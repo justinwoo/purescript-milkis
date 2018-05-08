@@ -40,23 +40,6 @@ main = run [consoleReporter] do
           }
       result <- attempt $ fetch (URL "https://www.google.com") opts
       isRight result `shouldEqual` true
-    it "has correct headers" do
-      let
-        opts =
-          { method: M.postMethod
-          , body: "{}"
-          , headers: M.makeHeaders {
-              "Content-Type": "application/json"
-            , "Something-Weird": "someValue"
-            }
-          }
-      response_ <- attempt $ fetch (URL "https://httpbin.org/post") opts
-      case response_ of
-        Left e -> do
-          fail $ "failed with " <> show e
-        Right response -> do
-          stuff <- M.json response
-          (unsafeCoerce stuff).headers."Something-Weird" `shouldEqual` "someValue"
     it "put works" do
       let opts = { method: M.putMethod }
       result <- attempt $ fetch (URL "https://www.google.com") opts
