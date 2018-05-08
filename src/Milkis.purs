@@ -5,12 +5,16 @@ module Milkis
   , Options
   , Method
   , Headers
+  , Credentials
   , defaultFetchOptions
   , getMethod
   , postMethod
   , putMethod
   , deleteMethod
   , headMethod
+  , omitCredentials
+  , sameOriginCredentials
+  , includeCredentials
   , fetch
   , json
   , text
@@ -51,7 +55,20 @@ type Options =
   ( method :: Method
   , body :: String
   , headers :: Headers
+  , credentials :: Credentials
   )
+
+-- | See <https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials>.
+foreign import data Credentials :: Type
+
+omitCredentials :: Credentials
+omitCredentials = unsafeCoerce "omit"
+
+sameOriginCredentials :: Credentials
+sameOriginCredentials = unsafeCoerce "same-origin"
+
+includeCredentials :: Credentials
+includeCredentials = unsafeCoerce "include"
 
 foreign import data Method :: Type
 
