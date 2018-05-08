@@ -6,7 +6,6 @@ import Control.Monad.Aff (attempt)
 import Control.Monad.Eff (Eff)
 import Data.Either (Either(..), isRight)
 import Data.String (null)
-import Data.Tuple (Tuple(..))
 import Milkis (URL(..), Fetch)
 import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
@@ -37,7 +36,7 @@ main = run [consoleReporter] do
         opts =
           { method: M.postMethod
           , body: "{}"
-          , headers: M.makeHeaders [ Tuple "Content-Type" "application/json" ]
+          , headers: M.makeHeaders { "Content-Type": "application/json" }
           }
       result <- attempt $ fetch (URL "https://www.google.com") opts
       isRight result `shouldEqual` true
@@ -46,10 +45,10 @@ main = run [consoleReporter] do
         opts =
           { method: M.postMethod
           , body: "{}"
-          , headers: M.makeHeaders [
-              Tuple "Content-Type" "application/json"
-            , Tuple "Something-Weird" "someValue"
-            ]
+          , headers: M.makeHeaders {
+              "Content-Type": "application/json"
+            , "Something-Weird": "someValue"
+            }
           }
       response_ <- attempt $ fetch (URL "https://httpbin.org/post") opts
       case response_ of
