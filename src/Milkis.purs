@@ -114,9 +114,9 @@ text :: forall eff. Response -> Aff eff String
 text res = toAffE (textImpl res)
 
 statusCode :: Response -> Int
-statusCode response = response'.statusCode
+statusCode response = response'.status
   where
-    response' :: { statusCode :: Int }
+    response' :: { status :: Int }
     response' = unsafeCoerce response
 
 foreign import data Response :: Type
