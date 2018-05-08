@@ -22,34 +22,35 @@ module Milkis
   , statusCode
   ) where
 
-import Prelude (class Show, ($))
-
-import Control.Monad.Aff (Aff)
-import Control.Monad.Eff (Eff)
-import Control.Promise (Promise, toAffE)
-import Data.Foreign (Foreign)
-import Data.StrMap as StrMap
-import Data.Newtype (class Newtype)
-import Milkis.Impl (FetchImpl)
 import Type.Row.Homogeneous
+
+import Control.Promise (Promise, toAffE)
+import Data.Newtype (class Newtype)
+import Effect (Effect)
+import Effect.Aff (Aff)
+import Foreign (Foreign)
+import Foreign.Object as Object
+import Milkis.Impl (FetchImpl)
+import Prelude (class Show, ($))
+import Type.Row (class Union)
 import Unsafe.Coerce (unsafeCoerce)
 
 -- | Create a map from a homogeneous record (all attributes have the same type).
-fromRecord :: forall r t. Homogeneous r t => Record r -> StrMap.StrMap t
+fromRecord :: forall r t. Homogeneous r t => Record r -> Object.Object t
 fromRecord = fromRecordImpl
 
-foreign import fromRecordImpl :: forall r t. Record r -> StrMap.StrMap t
+foreign import fromRecordImpl :: forall r t. Record r -> Object.Object t
 
 newtype URL = URL String
 derive instance newtypeURL :: Newtype URL _
 derive newtype instance showURL :: Show URL
 
 type Fetch
-   = forall options trash eff
+   = forall options trash
    . Union options trash Options
   => URL
   -> Record (method :: Method | options)
-  -> Aff eff Response
+  -> Aff Response
 
 type Options =
   ( method :: Method
@@ -87,7 +88,7 @@ deleteMethod = unsafeCoerce "DELETE"
 headMethod :: Method
 headMethod = unsafeCoerce "HEAD"
 
-type Headers = StrMap.StrMap String
+type Headers = Object.Object String
 
 makeHeaders
   :: forall r . Homogeneous r String
@@ -100,17 +101,13 @@ defaultFetchOptions =
   { method: getMethod
   }
 
-fetch
-  :: FetchImpl
-  -> Fetch
+fetch :: FetchImpl -> Fetch
 fetch impl url opts = toAffE $ _fetch impl url opts
 
-json :: forall eff
-  .  Response
-  -> Aff eff Foreign
+json :: Response -> Aff Foreign
 json res = toAffE (jsonImpl res)
 
-text :: forall eff. Response -> Aff eff String
+text :: Response -> Aff String
 text res = toAffE (textImpl res)
 
 statusCode :: Response -> Int
@@ -122,16 +119,12 @@ statusCode response = response'.status
 foreign import data Response :: Type
 
 foreign import _fetch
-  :: forall eff options
+  :: forall options
    . FetchImpl
   -> URL
   -> Record options
-  -> Eff eff (Promise Response)
+  -> Effect (Promise Response)
 
-foreign import jsonImpl :: forall eff.
-  Response
-  -> Eff eff (Promise Foreign)
+foreign import jsonImpl :: Response -> Effect (Promise Foreign)
 
-foreign import textImpl :: forall eff.
-  Response
-  -> Eff eff (Promise String)
+foreign import textImpl :: Response -> Effect (Promise String)
