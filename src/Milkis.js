@@ -22,3 +22,7 @@ exports.textImpl = function(response) {
     return response.text();
   };
 };
+
+exports.fromRecordImpl = function(r) {
+  return r;
+};

@@ -5,7 +5,6 @@ module Milkis
   , Options
   , Method
   , Headers
-  , HeaderProperties
   , defaultFetchOptions
   , getMethod
   , postMethod
@@ -19,15 +18,23 @@ module Milkis
   , statusCode
   ) where
 
-import Prelude
+import Prelude (class Show, ($))
 
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
 import Control.Promise (Promise, toAffE)
 import Data.Foreign (Foreign)
+import Data.StrMap as StrMap
 import Data.Newtype (class Newtype)
 import Milkis.Impl (FetchImpl)
+import Type.Row.Homogeneous
 import Unsafe.Coerce (unsafeCoerce)
+
+-- | Create a map from a homogeneous record (all attributes have the same type).
+fromRecord :: forall r t. Homogeneous r t => Record r -> StrMap.StrMap t
+fromRecord = fromRecordImpl
+
+foreign import fromRecordImpl :: forall r t. Record r -> StrMap.StrMap t
 
 newtype URL = URL String
 derive instance newtypeURL :: Newtype URL _
@@ -63,18 +70,13 @@ deleteMethod = unsafeCoerce "DELETE"
 headMethod :: Method
 headMethod = unsafeCoerce "HEAD"
 
-foreign import data Headers :: Type
-
-type HeaderProperties =
-  ( "Content-Type" :: String
-  )
+type Headers = StrMap.StrMap String
 
 makeHeaders
-  :: forall props trash
-   . Union props trash HeaderProperties
-  => Record props
+  :: forall r . Homogeneous r String
+  => Record r
   -> Headers
-makeHeaders = unsafeCoerce
+makeHeaders = fromRecord
 
 defaultFetchOptions :: {method :: Method}
 defaultFetchOptions =
