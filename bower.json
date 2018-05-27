@@ -9,10 +9,10 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-prelude": "#compiler/0.12",
-    "purescript-aff-promise": "justinwoo/purescript-aff-promise#compiler/0.12",
-    "purescript-typelevel-prelude": "#compiler/0.12",
-    "purescript-foreign-object": "#compiler/0.12"
+    "purescript-prelude": "^4.0.0",
+    "purescript-aff-promise": "^2.0.0",
+    "purescript-typelevel-prelude": "^3.0.0",
+    "purescript-foreign-object": "^1.0.0"
   },
   "devDependencies": {
     "purescript-spec": "justinwoo/purescript-spec#compiler/0.12"
