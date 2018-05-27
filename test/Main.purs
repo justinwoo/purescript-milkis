@@ -2,23 +2,22 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Aff (attempt)
-import Control.Monad.Eff (Eff)
 import Data.Either (Either(..), isRight)
 import Data.String (null)
+import Effect (Effect)
+import Effect.Aff (attempt)
 import Milkis (URL(..), Fetch)
 import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (fail, shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
-import Test.Spec.Runner (RunnerEffects, run)
-import Unsafe.Coerce (unsafeCoerce)
+import Test.Spec.Runner (run)
 
 fetch :: Fetch
 fetch = M.fetch nodeFetch
 
-main :: Eff (RunnerEffects ()) Unit
+main :: Effect Unit
 main = run [consoleReporter] do
   describe "purescript-milkis" do
     it "get works and gets a body" do

@@ -9,13 +9,13 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-prelude": "^3.3.0",
-    "purescript-aff-promise": "^1.0.0",
-    "purescript-typelevel-prelude": "^2.7.0"
+    "purescript-prelude": "^4.0.0",
+    "purescript-aff-promise": "^2.0.0",
+    "purescript-typelevel-prelude": "^3.0.0",
+    "purescript-foreign-object": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0",
-    "purescript-spec": "^2.0.0"
+    "purescript-spec": "justinwoo/purescript-spec#compiler/0.12"
   },
   "authors": [
     "justinwoo <moomoowoo@gmail.com>",
