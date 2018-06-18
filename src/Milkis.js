@@ -13,7 +13,9 @@ exports._fetch = function(fetchImpl) {
 
 exports.jsonImpl = function(response) {
   return function() {
-    return response.json();
+    return response.json().catch(function(e) {
+      throw new Error(e);
+    });
   };
 };
 
