@@ -2,11 +2,15 @@
 
 [![Build Status](https://travis-ci.org/justinwoo/purescript-milkis.svg?branch=master)](https://travis-ci.org/justinwoo/purescript-milkis)
 
+[![Documentation Status](https://readthedocs.org/projects/purescript-milkis/badge/?version=latest)](https://purescript-milkis.readthedocs.io/en/latest/?badge=latest)
+
 A library for working with the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) both in the Browser and on Node via [node-fetch](https://github.com/bitinn/node-fetch), for all your HTTP request needs.
 
 Aptly named for the greatest soft drink of all time, [Milkis](https://en.wikipedia.org/wiki/Milkis).
 
 ![](https://i.imgur.com/StOQOAP.jpg)
+
+Read the [guide](https://purescript-milkis.readthedocs.io) to learn how to use this library.
 
 ## Installation
 
