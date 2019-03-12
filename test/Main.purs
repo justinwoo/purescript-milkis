@@ -2,6 +2,7 @@ module Test.Main where
 
 import Prelude
 
+import Data.ArrayBuffer.Types (ArrayBuffer)
 import Data.Either (Either(..), isRight)
 import Data.String (null)
 import Effect (Effect)
@@ -29,6 +30,18 @@ main = run [consoleReporter] do
           let code = M.statusCode response
           code `shouldEqual` 200
           null stuff `shouldEqual` false
+
+    it "get works and gets a body" do
+      _response <- attempt $ fetch (M.URL "https://www.google.com") M.defaultFetchOptions
+      case _response of
+        Left e -> do
+          fail $ "failed with " <> show e
+        Right response -> do
+          arrayBuffer <- M.arrayBuffer response
+          let code = M.statusCode response
+          code `shouldEqual` 200
+          (byteLength arrayBuffer > 0) `shouldEqual` true 
+
     it "post works" do
       let
         opts =
@@ -46,3 +59,6 @@ main = run [consoleReporter] do
       let opts = { method: M.deleteMethod }
       result <- attempt $ fetch (M.URL "https://www.google.com") opts
       isRight result `shouldEqual` true
+
+
+foreign import byteLength :: ArrayBuffer -> Int

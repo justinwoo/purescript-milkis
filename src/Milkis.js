@@ -25,6 +25,12 @@ exports.textImpl = function(response) {
   };
 };
 
+exports.arrayBufferImpl = function(response) {
+  return function() {
+    return response.arrayBuffer();
+  };
+};
+
 exports.fromRecordImpl = function(r) {
   return r;
 };
