@@ -18,6 +18,7 @@ module Milkis
   , fetch
   , json
   , text
+  , arrayBuffer
   , makeHeaders
   , statusCode
   ) where
@@ -25,6 +26,7 @@ module Milkis
 import Type.Row.Homogeneous
 
 import Control.Promise (Promise, toAffE)
+import Data.ArrayBuffer.Types (ArrayBuffer)
 import Data.Newtype (class Newtype)
 import Effect (Effect)
 import Effect.Aff (Aff)
@@ -110,6 +112,9 @@ json res = toAffE (jsonImpl res)
 text :: Response -> Aff String
 text res = toAffE (textImpl res)
 
+arrayBuffer :: Response -> Aff ArrayBuffer 
+arrayBuffer res = toAffE (arrayBufferImpl res)
+
 statusCode :: Response -> Int
 statusCode response = response'.status
   where
@@ -128,3 +133,5 @@ foreign import _fetch
 foreign import jsonImpl :: Response -> Effect (Promise Foreign)
 
 foreign import textImpl :: Response -> Effect (Promise String)
+
+foreign import arrayBufferImpl :: Response -> Effect (Promise ArrayBuffer)
