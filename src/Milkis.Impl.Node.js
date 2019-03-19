@@ -1,1 +1,1 @@
-exports.nodeFetch = require("node-fetch");
+exports.nodeFetch = require("node-fetch").default;
