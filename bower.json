@@ -16,7 +16,7 @@
     "purescript-arraybuffer-types": "^2.0.0"
   },
   "devDependencies": {
-    "purescript-spec": "justinwoo/purescript-spec#compiler/0.12"
+    "purescript-spec": "^4.0.0-rc1"
   },
   "authors": [
     "justinwoo <moomoowoo@gmail.com>",

@@ -6,19 +6,19 @@ import Data.ArrayBuffer.Types (ArrayBuffer)
 import Data.Either (Either(..), isRight)
 import Data.String (null)
 import Effect (Effect)
-import Effect.Aff (attempt)
+import Effect.Aff (attempt, launchAff_)
 import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (fail, shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
-import Test.Spec.Runner (run)
+import Test.Spec.Runner (runSpec)
 
 fetch :: M.Fetch
 fetch = M.fetch nodeFetch
 
 main :: Effect Unit
-main = run [consoleReporter] do
+main = launchAff_ $ runSpec [consoleReporter] do
   describe "purescript-milkis" do
     it "get works and gets a body" do
       _response <- attempt $ fetch (M.URL "https://www.google.com") M.defaultFetchOptions
