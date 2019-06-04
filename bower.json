@@ -11,7 +11,7 @@
   "dependencies": {
     "purescript-prelude": "^4.0.0",
     "purescript-aff-promise": "^2.0.0",
-    "purescript-typelevel-prelude": "^4.0.0",
+    "purescript-typelevel-prelude": ">=4.0.0 <6.0.0",
     "purescript-foreign-object": "^2.0.1",
     "purescript-arraybuffer-types": "^2.0.0"
   },
