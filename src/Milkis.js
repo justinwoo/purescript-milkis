@@ -25,6 +25,14 @@ exports.textImpl = function(response) {
   };
 };
 
+exports.headersImpl = function(response) {
+    let d = {};
+    for (h of response.headers) {
+        d[h[0]] = h[1];
+    };
+    return d;
+};
+
 exports.arrayBufferImpl = function(response) {
   return function() {
     return response.arrayBuffer();

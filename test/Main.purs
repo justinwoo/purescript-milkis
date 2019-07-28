@@ -7,10 +7,11 @@ import Data.Either (Either(..), isRight)
 import Data.String (null)
 import Effect (Effect)
 import Effect.Aff (attempt, launchAff_)
+import Foreign.Object as Object
 import Milkis as M
 import Milkis.Impl.Node (nodeFetch)
 import Test.Spec (describe, it)
-import Test.Spec.Assertions (fail, shouldEqual)
+import Test.Spec.Assertions (fail, shouldEqual, shouldContain)
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (runSpec)
 
@@ -30,6 +31,9 @@ main = launchAff_ $ runSpec [consoleReporter] do
           let code = M.statusCode response
           code `shouldEqual` 200
           null stuff `shouldEqual` false
+          let headers = M.headers response
+          Object.keys headers `shouldContain` "content-type"
+          Object.keys headers `shouldContain` "content-encoding"
 
     it "get works and gets a body" do
       _response <- attempt $ fetch (M.URL "https://www.google.com") M.defaultFetchOptions
@@ -40,7 +44,7 @@ main = launchAff_ $ runSpec [consoleReporter] do
           arrayBuffer <- M.arrayBuffer response
           let code = M.statusCode response
           code `shouldEqual` 200
-          (byteLength arrayBuffer > 0) `shouldEqual` true 
+          (byteLength arrayBuffer > 0) `shouldEqual` true
 
     it "post works" do
       let
