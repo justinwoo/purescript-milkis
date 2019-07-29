@@ -18,6 +18,7 @@ module Milkis
   , fetch
   , json
   , text
+  , headers
   , arrayBuffer
   , makeHeaders
   , statusCode
@@ -32,6 +33,7 @@ import Effect (Effect)
 import Effect.Aff (Aff)
 import Foreign (Foreign)
 import Foreign.Object as Object
+import Foreign.Object (Object)
 import Milkis.Impl (FetchImpl)
 import Prelude (class Show, ($))
 import Type.Row (class Union)
@@ -112,6 +114,9 @@ json res = toAffE (jsonImpl res)
 text :: Response -> Aff String
 text res = toAffE (textImpl res)
 
+headers :: Response -> Object String
+headers = headersImpl
+
 arrayBuffer :: Response -> Aff ArrayBuffer 
 arrayBuffer res = toAffE (arrayBufferImpl res)
 
@@ -133,5 +138,7 @@ foreign import _fetch
 foreign import jsonImpl :: Response -> Effect (Promise Foreign)
 
 foreign import textImpl :: Response -> Effect (Promise String)
+
+foreign import headersImpl :: Response -> Object String
 
 foreign import arrayBufferImpl :: Response -> Effect (Promise ArrayBuffer)
