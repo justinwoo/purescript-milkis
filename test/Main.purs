@@ -46,6 +46,15 @@ main = launchAff_ $ runSpec [consoleReporter] do
           code `shouldEqual` 200
           (byteLength arrayBuffer > 0) `shouldEqual` true
 
+    it "gets an url" do
+      _response <- attempt $ fetch (M.URL "https://www.google.com") M.defaultFetchOptions
+      case _response of
+        Left e -> do
+          fail $ "failed with " <> show e
+        Right response -> do
+          let url = M.url response
+          url `shouldEqual` (M.URL "https://www.google.com/")
+
     it "post works" do
       let
         opts =

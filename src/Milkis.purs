@@ -22,6 +22,7 @@ module Milkis
   , arrayBuffer
   , makeHeaders
   , statusCode
+  , url
   ) where
 
 import Type.Row.Homogeneous
@@ -32,10 +33,10 @@ import Data.Newtype (class Newtype)
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Foreign (Foreign)
-import Foreign.Object as Object
 import Foreign.Object (Object)
+import Foreign.Object as Object
 import Milkis.Impl (FetchImpl)
-import Prelude (class Show, ($))
+import Prelude (class Eq, class Show, ($))
 import Type.Row (class Union)
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -48,6 +49,7 @@ foreign import fromRecordImpl :: forall r t. Record r -> Object.Object t
 newtype URL = URL String
 derive instance newtypeURL :: Newtype URL _
 derive newtype instance showURL :: Show URL
+derive instance eqURL :: Eq URL
 
 type Fetch
    = forall options trash
@@ -106,7 +108,7 @@ defaultFetchOptions =
   }
 
 fetch :: FetchImpl -> Fetch
-fetch impl url opts = toAffE $ _fetch impl url opts
+fetch impl url' opts = toAffE $ _fetch impl url' opts
 
 json :: Response -> Aff Foreign
 json res = toAffE (jsonImpl res)
@@ -124,6 +126,12 @@ statusCode :: Response -> Int
 statusCode response = response'.status
   where
     response' :: { status :: Int }
+    response' = unsafeCoerce response
+
+url :: Response -> URL
+url response = URL response'.url
+  where
+    response' :: { url :: String}
     response' = unsafeCoerce response
 
 foreign import data Response :: Type
