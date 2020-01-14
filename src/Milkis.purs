@@ -5,6 +5,7 @@ module Milkis
   , Options
   , Method
   , Headers
+  , Redirect
   , Credentials
   , defaultFetchOptions
   , getMethod
@@ -12,6 +13,9 @@ module Milkis
   , putMethod
   , deleteMethod
   , headMethod
+  , redirectError
+  , redirectFollow
+  , redirectManual
   , omitCredentials
   , sameOriginCredentials
   , includeCredentials
@@ -63,6 +67,8 @@ type Options =
   , body :: String
   , headers :: Headers
   , credentials :: Credentials
+  , follow :: Int
+  , redirect :: Redirect
   )
 
 -- | See <https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials>.
@@ -94,6 +100,17 @@ deleteMethod = unsafeCoerce "DELETE"
 headMethod :: Method
 headMethod = unsafeCoerce "HEAD"
 
+foreign import data Redirect :: Type
+
+redirectError :: Redirect
+redirectError = unsafeCoerce "error"
+
+redirectFollow :: Redirect
+redirectFollow = unsafeCoerce "follow"
+
+redirectManual :: Redirect
+redirectManual = unsafeCoerce "manual"
+
 type Headers = Object.Object String
 
 makeHeaders
@@ -119,7 +136,7 @@ text res = toAffE (textImpl res)
 headers :: Response -> Object String
 headers = headersImpl
 
-arrayBuffer :: Response -> Aff ArrayBuffer 
+arrayBuffer :: Response -> Aff ArrayBuffer
 arrayBuffer res = toAffE (arrayBufferImpl res)
 
 statusCode :: Response -> Int
