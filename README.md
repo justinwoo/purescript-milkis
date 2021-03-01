@@ -72,7 +72,7 @@ type Fetch
   -> Aff Response
 ```
 
-What this signature says is given some type varaibles `options` and `trash` where there is a `Union` of `options` and `trash` together to form `Options`, we have a function that takes `URL` and a record with a `method :: Method` field and the fields specified in `options` to return an `Aff Response`. Let's look at the definition of `Options`:
+What this signature says is given some type variables `options` and `trash` where there is a `Union` of `options` and `trash` together to form `Options`, we have a function that takes `URL` and a record with a `method :: Method` field and the fields specified in `options` to return an `Aff Response`. Let's look at the definition of `Options`:
 
 ```hs
 type Options =
