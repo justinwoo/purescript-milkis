@@ -94,6 +94,9 @@ postMethod = unsafeCoerce "POST"
 putMethod :: Method
 putMethod = unsafeCoerce "PUT"
 
+patchMethod :: Method
+patchMethod = unsafeCoerce "PATCH"
+
 deleteMethod :: Method
 deleteMethod = unsafeCoerce "DELETE"
 
