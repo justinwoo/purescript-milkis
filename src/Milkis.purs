@@ -11,6 +11,7 @@ module Milkis
   , getMethod
   , postMethod
   , putMethod
+  , patchMethod
   , deleteMethod
   , headMethod
   , redirectError
