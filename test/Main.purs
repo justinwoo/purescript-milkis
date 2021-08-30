@@ -68,6 +68,10 @@ main = launchAff_ $ runSpec [consoleReporter] do
       let opts = { method: M.putMethod }
       result <- attempt $ fetch (M.URL "https://www.google.com") opts
       isRight result `shouldEqual` true
+    it "patch works" do
+      let opts = { method: M.patchMethod }
+      result <- attempt $ fetch (M.URL "https://www.google.com") opts
+      isRight result `shouldEqual` true
     it "delete works" do
       let opts = { method: M.deleteMethod }
       result <- attempt $ fetch (M.URL "https://www.google.com") opts
