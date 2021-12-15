@@ -9,14 +9,14 @@
     "tests"
   ],
   "dependencies": {
-    "purescript-prelude": "^4.0.0",
-    "purescript-aff-promise": "^2.0.0",
-    "purescript-typelevel-prelude": ">=4.0.0 <6.0.0",
-    "purescript-foreign-object": "^2.0.1",
-    "purescript-arraybuffer-types": "^2.0.0"
+    "purescript-prelude": "^5.0.1",
+    "purescript-aff-promise": "^3.0.0",
+    "purescript-typelevel-prelude": "^6.0.0",
+    "purescript-foreign-object": "^3.0.0",
+    "purescript-arraybuffer-types": "^3.0.1"
   },
   "devDependencies": {
-    "purescript-spec": "^4.0.0-rc1"
+    "purescript-spec": "^5.0.1"
   },
   "authors": [
     "justinwoo <moomoowoo@gmail.com>",
