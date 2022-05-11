@@ -7,3 +7,5 @@
 /.purs*
 /.psa*
 package-lock.json
+/.spago/
+/yarn.lock

@@ -1,17 +1,9 @@
 {
   "name": "purescript-milkis",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
+  "devDependencies": {
+    "spago": "^0.20.9"
   },
-  "scripts": {
-    "test": "pulp test"
-  },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^3.2.4"
   }
 }
