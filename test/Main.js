@@ -1,3 +1,3 @@
-exports.byteLength = function(arrayBuffer) {
+export function byteLength(arrayBuffer) {
   return arrayBuffer.byteLength;
 };

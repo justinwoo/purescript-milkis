@@ -1,4 +1,4 @@
-exports._fetch = function(fetchImpl) {
+export function _fetch(fetchImpl) {
   return function(url) {
     return function(options) {
       return function() {
@@ -11,7 +11,7 @@ exports._fetch = function(fetchImpl) {
   };
 };
 
-exports.jsonImpl = function(response) {
+export function jsonImpl(response) {
   return function() {
     return response.json().catch(function(e) {
       throw new Error(e);
@@ -19,13 +19,13 @@ exports.jsonImpl = function(response) {
   };
 };
 
-exports.textImpl = function(response) {
+export function textImpl(response) {
   return function() {
     return response.text();
   };
 };
 
-exports.headersImpl = function (response) {
+export function headersImpl(response) {
   var d = {};
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
@@ -56,12 +56,12 @@ exports.headersImpl = function (response) {
   return d;
 };
 
-exports.arrayBufferImpl = function(response) {
+export function arrayBufferImpl(response) {
   return function() {
     return response.arrayBuffer();
   };
 };
 
-exports.fromRecordImpl = function(r) {
+export function fromRecordImpl(r) {
   return r;
 };
