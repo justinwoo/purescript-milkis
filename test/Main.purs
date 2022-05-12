@@ -35,7 +35,7 @@ main = launchAff_ $ runSpec [consoleReporter] do
           Object.keys headers `shouldContain` "content-type"
           Object.keys headers `shouldContain` "content-encoding"
 
-    it "get works and gets a body" do
+    it "get works and gets a body 2" do
       _response <- attempt $ fetch (M.URL "https://www.google.com") M.defaultFetchOptions
       case _response of
         Left e -> do

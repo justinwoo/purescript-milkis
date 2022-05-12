@@ -1,1 +1,1 @@
-exports.windowFetch = window.fetch;
+export const windowFetch = window.fetch;
