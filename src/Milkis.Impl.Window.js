@@ -1,1 +1,1 @@
-export function windowFetch() { return window.fetch.apply(this, arguments); }
+export const windowFetch = window.fetch;
