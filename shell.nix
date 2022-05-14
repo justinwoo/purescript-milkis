@@ -15,5 +15,9 @@ pkgs.mkShell {
   buildInputs = [
     easy-ps.purs
     easy-ps.psc-package
+    pkgs.nodejs
+    pkgs.nodePackages.pulp
+    pkgs.nodePackages.bower
+    pkgs.nodePackages.yarn
   ];
 }
